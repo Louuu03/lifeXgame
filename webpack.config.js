@@ -24,6 +24,10 @@ module.exports = {
       template: path.resolve(__dirname, 'public/index.html'),
     }),
   ],
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+  },
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
     port: 3000,
