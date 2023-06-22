@@ -1,0 +1,53 @@
+@import "./colors";
+
+.AuthPage{
+    &.FullPageBox{
+        flex-direction: column;
+        background-color: $primary-yellow;
+
+        .Title{
+            flex-direction: row;
+            display: flex;
+            margin-left: -25px;
+            position: relative;
+
+            h1{
+                color: $wine-red;
+                padding-left: 40px;
+            }
+
+            .Icon {
+                left: -20px;
+                bottom: -30px;
+                position: absolute;
+                height: 60px;
+                transform: rotate(50deg);
+                color: $wine-red;
+            }
+        }
+
+        .InputField{
+            width: 325px;
+            padding: 20px;
+            background-color: #FFECC9 ;
+            border-radius: 20px;
+
+            .InputComponents{
+                padding-top: 10px;
+
+                .InputArea{
+                    margin:10px 0;
+                    width: 100%;
+                }
+            }
+            .SubmitBtn{
+                background-color: $wine-red;
+                margin-top: 10px;
+                width: 150px;
+                color: white;
+                float: right;
+            }
+        }
+    }
+
+}

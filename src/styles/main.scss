@@ -1,1 +1,12 @@
-@import "./colors"
+@import "./colors";
+@import "./components.scss";
+@import "./AuthPage.scss";
+@import "./Home.scss";
+
+
+html, body, #root{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+}
