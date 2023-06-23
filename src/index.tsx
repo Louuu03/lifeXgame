@@ -7,15 +7,14 @@ import './styles/main.scss';
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
 
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Provider store={store}>
-      <AppRoutes />
+      <Provider store={store}>
+        <AppRoutes />
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

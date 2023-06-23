@@ -2,27 +2,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserInfos {
-    user: string | null;
-    id: string | null;
+  user: string | null;
+  id: string | null;
 }
 
 interface UserState {
-    userInfos: UserInfos;
+  userInfos: UserInfos;
 }
 
 const initialState: UserState = {
-    userInfos: { user: null, id: null },
+  userInfos: { user: null, id: null },
 };
 
-
 const userSlice = createSlice({
-    name: 'userInfos',
-    initialState,
-    reducers: {
-        setUserInfos: (state, action: PayloadAction<UserInfos>) => {
-            state.userInfos = action.payload;
-        },
+  name: 'userInfos',
+  initialState,
+  reducers: {
+    setUserInfos: (state, action: PayloadAction<UserInfos>) => {
+      state.userInfos = action.payload;
     },
+  },
 });
 
 export const { setUserInfos } = userSlice.actions;

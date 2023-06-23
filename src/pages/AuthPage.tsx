@@ -3,7 +3,7 @@ import Lang from '../languages';
 import firebaseConfig from '../firebaseConfig';
 import { setUserInfos } from '../redux/reducers/userSlice';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import {
   TextField,
@@ -25,7 +25,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { doc, setDoc, getFirestore, getDoc } from 'firebase/firestore';
-import  { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 /**type */
 type Infos = {
@@ -54,6 +54,11 @@ function AuthPage(): JSX.Element {
   const [toast, setToast] = useState<number>(0);
 
   const dispatch = useDispatch();
+  const settings = useSelector(
+    (state: { settings: { settings: { lang: string } } }) =>
+      state.settings.settings,
+  );
+  let lang: string = 'eng';
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -84,6 +89,10 @@ function AuthPage(): JSX.Element {
   ) => {
     setToast(0);
   };
+  const setUser = (user: string, id: string) => {
+    dispatch(setUserInfos({ user, id }));
+    localStorage.setItem('user', JSON.stringify({ user, id }));
+  };
   /** Function to handle submission */
   const onSubmit: SubmitHandler<Infos> = (data: Infos) => {
     tab === 0
@@ -91,8 +100,9 @@ function AuthPage(): JSX.Element {
           .then((userCredential) => {
             console.log(userCredential);
             getDoc(doc(db, 'BasicInfo', userCredential.user.uid))
-              .then((res) => {setToast(1);
-                dispatch(setUserInfos({user:res.data()?.Name||null, id:userCredential.user.uid}));
+              .then((res) => {
+                setToast(1);
+                setUser(res.data()?.Name || null, userCredential.user.uid);
               })
               .catch(() => setToast(2));
           })
@@ -106,7 +116,7 @@ function AuthPage(): JSX.Element {
             })
               .then(() => {
                 setToast(1);
-                dispatch(setUserInfos({user:data.user, id:userCredential.user.uid}));
+                setUser(data.user, userCredential.user.uid);
               })
               .catch((error) => setToast(2));
             // ...
@@ -115,6 +125,10 @@ function AuthPage(): JSX.Element {
             setToast(2);
           });
   };
+
+  useEffect(() => {
+    lang = settings.lang;
+  }, [settings]);
 
   return (
     <Box className="AuthPage FullPageBox">
@@ -148,13 +162,13 @@ function AuthPage(): JSX.Element {
               {...InputProps(3)}
               type="text"
               {...register('user', {
-                required: Lang.errorMsg.required.eng,
+                required: Lang.errorMsg.required[lang],
                 minLength: {
                   value: 2,
                   message:
-                    Lang.errorMsg.minWord.eng[0] +
+                    Lang.errorMsg.minWord[lang][0] +
                     '2' +
-                    Lang.errorMsg.minWord.eng[1],
+                    Lang.errorMsg.minWord[lang][1],
                 },
               })}
             />
@@ -166,7 +180,7 @@ function AuthPage(): JSX.Element {
             label="Email Account"
             {...InputProps(0)}
             type="email"
-            {...register('email', { required: Lang.errorMsg.required.eng })}
+            {...register('email', { required: Lang.errorMsg.required[lang] })}
           />
           <TextField
             required
@@ -192,13 +206,13 @@ function AuthPage(): JSX.Element {
               ),
             }}
             {...register('password', {
-              required: Lang.errorMsg.required.eng,
+              required: Lang.errorMsg.required[lang],
               minLength: {
                 value: 8,
                 message:
-                  Lang.errorMsg.minWord.eng[0] +
+                  Lang.errorMsg.minWord[lang][0] +
                   '8' +
-                  Lang.errorMsg.minWord.eng[1],
+                  Lang.errorMsg.minWord[lang][1],
               },
             })}
           />
@@ -206,8 +220,8 @@ function AuthPage(): JSX.Element {
         <Box>
           <Button className="SubmitBtn" onClick={handleSubmit(onSubmit)}>
             {tab === 0
-              ? Lang.authentication.logIn.eng
-              : Lang.authentication.signIn.eng}
+              ? Lang.authentication.logIn[lang]
+              : Lang.authentication.signIn[lang]}
           </Button>
         </Box>
       </Box>
@@ -222,12 +236,12 @@ function AuthPage(): JSX.Element {
         >
           {toast === 1 &&
             (tab === 0
-              ? Lang.authentication.logInSuccess.eng
-              : Lang.authentication.signInSuccess.eng)}
+              ? Lang.authentication.logInSuccess[lang]
+              : Lang.authentication.signInSuccess[lang])}
           {toast === 2 &&
             (tab === 0
-              ? Lang.authentication.logInFailure.eng
-              : Lang.authentication.signInFailuire.eng)}
+              ? Lang.authentication.logInFailure[lang]
+              : Lang.authentication.signInFailuire[lang])}
         </Alert>
       </Snackbar>
     </Box>
