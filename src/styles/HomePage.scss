@@ -1,0 +1,22 @@
+@import "./colors";
+
+.HomePage{
+    background-color: $secondary-green;
+    padding-bottom: 65px;
+
+    .Bar{
+        background-color: $primary-red;
+        max-height: 60px;
+
+        .AddIcon{
+            background-color: $dark-red;
+            position: absolute;
+            right:calc(50% - 28px);
+            top: -20px;
+
+            svg{
+                color: white;
+            }
+        }
+    }
+}

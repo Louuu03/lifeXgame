@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import AuthPage from './AuthPage';
-import Home from './Home';
+import HomePage from './HomePage';
 import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfos } from '../redux/reducers/userSlice';
