@@ -4,6 +4,8 @@ import Home from './Home';
 import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfos } from '../redux/reducers/userSlice';
+import LoadingPage from './LoadingPage';
+import { setSettings } from '../redux/reducers/settingsSlice';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -17,6 +19,12 @@ function App(): JSX.Element {
       };
     }) => state.userInfos.userInfos,
   );
+  const settings = useSelector(
+    (state: 
+     {settings:{settings:{ lang: string,
+      mode: number,isLoading:boolean}}}
+    ) => state.settings.settings,
+  );
 
   //check local storage if the user is logged in 
   useEffect(() => {
@@ -26,10 +34,13 @@ function App(): JSX.Element {
       const user = JSON.parse(storedUser);
       dispatch(setUserInfos(user));
     }
+    setTimeout(()=> dispatch(setSettings({...settings,isLoading:false})),750)
   }, []);
+
   return (
     <Box className="App FullPageBox">
-      {userInfos.user && userInfos.id ? <Home /> : <AuthPage />}
+      {settings.isLoading?<LoadingPage/>:
+      (userInfos.user && userInfos.id ? <Home /> : <AuthPage />)}
     </Box>
   );
 }
